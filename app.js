@@ -25,23 +25,22 @@ $(document).ready(function() {
             values[field.name] = field.value;
         });
 
-// logic that stores info in array
+// logic that stores info
         empArray.push(values);
         console.log(empArray);
 
 // calculate employee's monthly salary
-        salaryMonthly = Math.round(parseFloat(values.yearlySalary / 12));
+        salaryMonthly = parseInt(values.yearlySalary / 12);
         //console.log(salaryMonthly);
 
 // logic: calculate all employee salaries
 // show monthly cost of salaries
 // add monthly salary to total for all employees
-        totalSalary += Math.round(parseFloat(salaryMonthly));
+        totalSalary += parseFloat(salaryMonthly);
         //console.log(totalSalary);
 
 // submit button clears out the form by looking for any input with the type of text in the employeeForm id, then putting an empty string into it
-        $('#employeeForm').find('input[type=text]', 'input[type=number]').val('');
-        $('#empFirstName').focus();
+        $('#employeeForm').find('input[type=text]').val('');
 
 // delete employee info button
         // button.on click
@@ -51,36 +50,10 @@ $(document).ready(function() {
         //    $('#container').delete(empArray);
         //}
 
-
 // call to the function that writes to the DOM
         appendDom(values);
         //console.log(field);
-
     });
-
-// delete employee from DOM
-    $('#output').on('click', '#empDelete', function() {
-        //var employee = $(this).data();
-        //console.log(employee);
-        var index = $(this).data().id;
-        var employee = empArray[index];
-
-        totalSalary -= employee.empSalary;
-        totalSalary = Math.round(totalSalary / 12);
-        updateSalary(totalSalary);
-
-        $(this).parent().remove();
-
-        console.log(employee);
-    });
-
-
-// function to update employee salary
-    function upDateSalary(salary) {
-        $('#salaryMonthly').text('$ ' + salary);
-    }
-
-
 
 // function to append employee info to the DOM
     function appendDom(empInfo) {
@@ -89,7 +62,7 @@ $(document).ready(function() {
         // Select that container and have it grab it's last child and store it into the $el variable.
         var $el = $('#output').children().last();
         // store a remove button in the $btn variable
-        //var $btn = $('<button class="remove">Remove</button>')
+        var $btn = $('<button class="remove">Remove</button>')
         //
         //$($btn).on('click', removeDom);
 
@@ -98,44 +71,36 @@ $(document).ready(function() {
         $el.append('<li><strong>Name:</strong> ' + empInfo.empFirstName + ' ' + empInfo.empLastName + '</li>');
         $el.append('<li><strong>Employee ID:</strong> ' + empInfo.id + '</li>');
         $el.append('<li><strong>Job Title:</strong> ' + empInfo.jobTitle + '</li>');
-        $el.append('<li><strong>Yearly Salary:</strong> $' + empInfo.yearlySalary + '</li>');
-        $el.append('<li><strong>Monthly Salary:</strong> $' + salaryMonthly + '</li>');
-        $el.append('<li><strong>Total Company Salary Cost:</strong> $' + totalSalary + '</li>');
-        //$el.append('<button id="empDelete">Remove Employee</button>');
-        $el.append('<button id="empDelete" data-id="' + (empArray.length - 1) + '">Remove Employee</button>');
-
+        $el.append('<li><strong>Yearly Salary:</strong> $' + parseFloat(empInfo.yearlySalary).toFixed(2) + '</li>');
+        $el.append('<li><strong>Monthly Salary:</strong> $' + salaryMonthly.toFixed(2) + '</li>');
+        $el.append('<li><strong>Total Company Salary Cost:</strong> $' + totalSalary.toFixed(2) + '</li>');
+        $el.append($btn);
+        $el.remove($btn);
         //$el.append('<button id="empDelete">Delete this employee</button>');
     }
 });
 
-/* Solution
-
- salaryTotal += parseFloat(values.yearlySalary / 12);
- values.monthlySalary = parseFloat(values.yearlySalary);
+/* Class Notes
 
 
-
- // to change styles on the fly
- if(salaryTotal > 100000) {
- $('#salaryAmount').removeClass('acceptable');
- $('#salaryAmount').addClass('warning');
-
-
-
-
-
-
- */
-
-
-
-/*
  function removeDom(empInfo) {
 
- $('ul').parent.remove;
+ $(this).closest("ul").remove('ul');
 
+ var $el = $('#output').children().last();
+
+ // employee info removing from the DOM
+ $el.remove('<li>First Name: ' + empInfo.empFirstName + '</li>');
+ $el.remove('<li>Last Name: ' + empInfo.empLastName + '</li>');
+ $el.remove('<li>Employee ID: ' + empInfo.id + '</li>');
+ $el.remove('<li>Job Title: ' + empInfo.jobTitle + '</li>');
+ $el.remove('<li>Yearly Salary: $' + parseFloat(empInfo.yearlySalary).toFixed(2) + '</li>');
+ $el.remove('<li>Monthly Salary: $' + salaryMonthly.toFixed(2) + '</li>');
+ $el.remove('<li>Total Salary Cost: $' + totalSalary.toFixed(2) + '</li>');
+ $el.remove($btn);
  }
  */
+
 /*
 
  $(document).ready(function() {
@@ -178,8 +143,3 @@ $(document).ready(function() {
 
 
  */
-
-
-
-
-
